@@ -1,0 +1,22 @@
+version: '3.3'
+
+services:
+  application-form: 
+    build: ./application-form/ 
+    restart: always
+    ports: 
+      - "8080:8080"
+    networks:
+      - backend
+  
+  storage-files:
+    depends_on:
+      - application-form
+    build: ./storage-files/ 
+    restart: always
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
