@@ -3,7 +3,7 @@ const app = express();
 const multer = require("multer");
 const path = require("path");
 
-const port = 3500;
+const port = 80;
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -24,6 +24,14 @@ app.get("/", (req, res) => {
     }
 })
 
+app.get("/connect", (req, res) => {
+    try {
+        console.log("Service Connect Works!");
+        res.send("Connect OK!")
+    } catch (error){
+        res.sendStatus(500)
+    }
+})
 
 app.post("/upload", upload.single("file"), (req, res) => {
     res.status(200).send("Arquivo Recebido!");
