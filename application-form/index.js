@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
 
 app.get("/ecs-connect", async (req, res) => {
   try {
-    const response = await axios.get("http://storage-files/connect");
+    const response = await axios.get("http://storage-files.upload:80/connect");
     console.log(JSON.stringify(response.data));
     res.send("<h1> ECS-SERVICE-CONNECT - ONLINE </h1>");
   } catch (error) {

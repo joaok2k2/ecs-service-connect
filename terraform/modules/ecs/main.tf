@@ -17,7 +17,8 @@ resource "aws_iam_policy" "main" {
                   "ecr:GetDownloadUrlForLayer",
                   "ecr:BatchGetImage",
                   "logs:CreateLogStream",
-                  "logs:PutLogEvents"
+                  "logs:PutLogEvents",
+                  "logs:*"
               ],
               "Resource": "*"
           }
@@ -130,10 +131,15 @@ resource "aws_ecs_task_definition" "main" {
         "logDriver": "awslogs",
           "options": {
             "awslogs-group": "${var.project_name}-${var.environment}",
-            "awslogs-region": "us-east-1",
+            "awslogs-region": "${var.region}",
+            "awslogs-create-group": "true", 
             "awslogs-stream-prefix": "ecs"
           }
         }
+      "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+      }
     }
   ]
   DEFINITION

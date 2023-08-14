@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
 app.get("/connect", (req, res) => {
     try {
         console.log("Service Connect Works!");
-        res.send("Connect OK!")
+        res.status(200).send("Connect OK!")
     } catch (error){
         res.sendStatus(500)
     }
