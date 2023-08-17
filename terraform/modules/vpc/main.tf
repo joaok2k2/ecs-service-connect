@@ -6,6 +6,7 @@ module "vpc" {
   azs  = ["${var.region}a", "${var.region}b", "${var.region}c"]
 
   public_subnets = var.pub_sub
+  private_subnets = var.private_sub
 
   enable_dns_hostnames = true
   enable_dns_support   = true
@@ -35,3 +36,4 @@ resource "aws_security_group" "main" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+

@@ -10,6 +10,11 @@ variable "pub_sub" {
   type = list(string)
 }
 
+variable "private_sub" {
+  type = list(string)
+}
+
 variable "region" {
   type = string
 }
+

@@ -135,7 +135,7 @@ resource "aws_ecs_task_definition" "main" {
             "awslogs-create-group": "true", 
             "awslogs-stream-prefix": "ecs"
           }
-        }
+        },
       "runtimePlatform": {
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
@@ -156,7 +156,13 @@ resource "aws_ecs_service" "main" {
   task_definition = aws_ecs_task_definition.main.arn
   launch_type     = "FARGATE"
   desired_count   = 0
-
+  
+  load_balancer {
+    target_group_arn = var.target_group_arn
+    container_name   = "container-${var.project_name}-${var.environment}"
+    container_port   = 80
+  }
+  
   network_configuration {
     security_groups  = var.sg
     subnets          = var.sub-public

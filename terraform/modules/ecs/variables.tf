@@ -33,3 +33,8 @@ variable "sg" {
 variable "sub-public" {
   type = list(string)
 }
+
+variable "target_group_arn"{
+  type = string
+}
+
