@@ -71,7 +71,7 @@ resource "aws_lb_listener" "pub-listener_443" {
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.tg-sub.arn
+    target_group_arn = aws_lb_target_group.tg-pub.arn
   }
 }
 

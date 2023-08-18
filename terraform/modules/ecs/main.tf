@@ -157,16 +157,16 @@ resource "aws_ecs_service" "main" {
   launch_type     = "FARGATE"
   desired_count   = 0
   
-  load_balancer {
-    target_group_arn = var.target_group_arn_pub
-    container_name   = "container-${var.project_name}-${var.environment}"
-    container_port   = 80
-  }
 
-    load_balancer {
-    target_group_arn = var.target_group_arn_priv
-    container_name   = "container-${var.project_name}-${var.environment}"
-    container_port   = 80
+  dynamic "load_balancer" {
+    
+    for_each = length(keys(var.load_balancer)) == 0 ? [] : [var.load_balancer]
+    
+    content {
+      target_group_arn = lookup(load_balancer.value, "target_group_arn", null)
+      container_name   = "container-${var.project_name}-${var.environment}"
+      container_port   = 80
+    }
   }
   
   network_configuration {

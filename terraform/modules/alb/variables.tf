@@ -18,14 +18,18 @@ variable "private-alb-name"{
     type = string
 }
 
-variable "name_target_group"{
-  type = string
-}
-
 variable "certificate_arn"{
     type = string
 }
 
 variable "vpc_id"{
+    type = string
+}
+
+variable "name_target_group_pub"{
+    type = string
+}
+
+variable "name_target_group_private"{
     type = string
 }

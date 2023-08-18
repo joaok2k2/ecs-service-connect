@@ -34,10 +34,16 @@ variable "sub-public" {
   type = list(string)
 }
 
-variable "target_group_arn_pub"{
-  type = string
-}
-variable "target_group_arn_priv"{
-  type = string
-}
+# variable "target_group_arn_pub"{
+#   type = string
+# }
+# variable "target_group_arn_priv"{
+#   type = string
+# }
 
+
+variable "load_balancer"{
+
+  type = map(string)
+  default = {}
+}
