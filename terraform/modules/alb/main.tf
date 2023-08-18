@@ -28,8 +28,8 @@ resource "aws_lb" "private-alb" {
 
 
 
-resource "aws_lb_target_group" "main" {
-  name        = var.name_target_group
+resource "aws_lb_target_group" "tg-pub" {
+  name        = var.name_target_group_pub
   port        = 80
   protocol    = "HTTP"
   target_type = "ip"
@@ -61,6 +61,7 @@ resource "aws_lb_listener" "pub-listener_80" {
   }
 }
 
+
 resource "aws_lb_listener" "pub-listener_443" {
   load_balancer_arn = aws_lb.alb-pub.id
   port              = 443
@@ -70,10 +71,28 @@ resource "aws_lb_listener" "pub-listener_443" {
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.main.arn
+    target_group_arn = aws_lb_target_group.tg-sub.arn
   }
 }
 
+resource "aws_lb_target_group" "tg-priv" {
+  name        = var.name_target_group_private
+  port        = 80
+  protocol    = "HTTP"
+  target_type = "ip"
+  vpc_id      = var.vpc_id
+
+  health_check {
+    healthy_threshold   = "3"
+    interval            = "300"
+    protocol            = "HTTP"
+    matcher             = "200"
+    timeout             = "3"
+    path                = "/"
+    unhealthy_threshold = "2"
+  }
+  depends_on = [aws_lb.private-alb]
+}
 
 resource "aws_lb_listener" "private-listener_80" {
   load_balancer_arn = aws_lb.private-alb.id
@@ -86,5 +105,18 @@ resource "aws_lb_listener" "private-listener_80" {
       protocol    = "HTTPS"
       status_code = "HTTP_301"
     }
+  }
+}
+
+resource "aws_lb_listener" "private-listener_443" {
+  load_balancer_arn = aws_lb.alb-pub.id
+  port              = 443
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = var.certificate_arn
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.tg-priv.arn
   }
 }

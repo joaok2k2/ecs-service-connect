@@ -34,7 +34,10 @@ variable "sub-public" {
   type = list(string)
 }
 
-variable "target_group_arn"{
+variable "target_group_arn_pub"{
+  type = string
+}
+variable "target_group_arn_priv"{
   type = string
 }
 

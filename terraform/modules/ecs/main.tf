@@ -158,7 +158,13 @@ resource "aws_ecs_service" "main" {
   desired_count   = 0
   
   load_balancer {
-    target_group_arn = var.target_group_arn
+    target_group_arn = var.target_group_arn_pub
+    container_name   = "container-${var.project_name}-${var.environment}"
+    container_port   = 80
+  }
+
+    load_balancer {
+    target_group_arn = var.target_group_arn_priv
     container_name   = "container-${var.project_name}-${var.environment}"
     container_port   = 80
   }
