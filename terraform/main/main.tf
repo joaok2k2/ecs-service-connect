@@ -1,10 +1,3 @@
-locals {
-  load_balancer = {
-    public = module.elb.target_group_id_pub
-    private = module.elb.target_group_id_private
-  }
-}
-
 module "vpc" {
   source   = "../modules/vpc"
   vpc_name = "VPC-ECS-CONNECT-1"
@@ -23,7 +16,7 @@ module "elb"{
   sg-id = [module.vpc.sg-service]
   pub-sub = module.vpc.sub-public
   private-sub = module.vpc.sub-private
-  certificate_arn = "arn:aws:acm:us-west-2:431591413306:certificate/82cc4873-52b4-4987-8409-6d322bf2da34"
+  certificate_arn = var.certificate_arn
   name_target_group_pub = "TG-PUBLIC-ECS-CONNECT-1"
   name_target_group_private = "TG-PRIVATE-ECS-CONNECT-1"
 
@@ -50,8 +43,13 @@ module "ecs-1" {
   region           = var.region
   sg               = [module.vpc.sg-service]
   sub-public       = module.vpc.sub-public
-  load_balancer = {
-    
+ 
+  #Mutiple LoadBalancer   
+  load_balancer_1 = { 
+    target_group_arn = module.elb.target_group_id_pub
+  }
+  load_balancer_2 = { 
+    target_group_arn = module.elb.target_group_id_private
   }
 }
 

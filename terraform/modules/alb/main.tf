@@ -5,7 +5,7 @@ resource "aws_lb" "alb-pub" {
   security_groups    = var.sg-id
   subnets            = var.pub-sub
 
-  enable_deletion_protection = true
+  enable_deletion_protection = false
 
   tags = {
     Environment = "DEV"
@@ -19,7 +19,7 @@ resource "aws_lb" "private-alb" {
   security_groups    = var.sg-id
   subnets            = var.private-sub
 
-  enable_deletion_protection = true
+  enable_deletion_protection = false
 
   tags = {
     Environment = "DEV"
@@ -109,7 +109,7 @@ resource "aws_lb_listener" "private-listener_80" {
 }
 
 resource "aws_lb_listener" "private-listener_443" {
-  load_balancer_arn = aws_lb.alb-pub.id
+  load_balancer_arn = aws_lb.private-alb.id
   port              = 443
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"

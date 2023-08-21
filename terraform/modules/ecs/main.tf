@@ -160,7 +160,18 @@ resource "aws_ecs_service" "main" {
 
   dynamic "load_balancer" {
     
-    for_each = length(keys(var.load_balancer)) == 0 ? [] : [var.load_balancer]
+    for_each = length(keys(var.load_balancer_1)) == 0 ? [] : [var.load_balancer_1]
+    
+    content {
+      target_group_arn = lookup(load_balancer.value, "target_group_arn", null)
+      container_name   = "container-${var.project_name}-${var.environment}"
+      container_port   = 80
+    }
+  }
+
+    dynamic "load_balancer" {
+    
+    for_each = length(keys(var.load_balancer_2)) == 0 ? [] : [var.load_balancer_2]
     
     content {
       target_group_arn = lookup(load_balancer.value, "target_group_arn", null)

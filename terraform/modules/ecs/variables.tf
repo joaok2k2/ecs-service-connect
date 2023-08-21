@@ -42,7 +42,14 @@ variable "sub-public" {
 # }
 
 
-variable "load_balancer"{
+variable "load_balancer_1"{
+
+  type = map(string)
+  default = {}
+}
+
+
+variable "load_balancer_2"{
 
   type = map(string)
   default = {}
